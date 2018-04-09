@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+    <header class="masthead">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-lg-12 my-auto">
+            <div class="header-content mx-auto">
+              <!--<h1 class="mb-5">New Age is an app landing page that will help you beautifully showcase your new mobile app, or anything else!</h1>-->
+                <div class="form-group mb-5">
+                    <form action="/" method="post">
+                        <label for="usr">Your Zillow listing URL:</label>
+                        <input type="text" class="form-control mb-5" id="usr" name="url">
+                        <button type="submit" class="btn btn-info mb-5">Go</button>
+                    </form>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+{% endblock %}
