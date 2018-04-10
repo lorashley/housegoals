@@ -155,7 +155,7 @@ def main(url, zws_id, ss_at, sheet_id):
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
 
     #Check if entry is in the mongo db, and add if not
-    resp = propMongo.find_property(d, 'properties')
+    resp = propMongo.find_property(property, 'properties')
     if resp:
         print("Mongo entry already exists")
         return 200
