@@ -154,7 +154,8 @@ def main(url, zws_id, ss_at, sheet_id):
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
     #print(property)
     resp = input_to_smartsheet(ss_at, sheet_id, property)
-    add_to_mongo(property)
+    mongo_resp = add_to_mongo(property)
+    print(mongo_resp)
     if resp:
         s_url = 'https://app.smartsheet.com/b/home?lx=GNCEaOWOxrRfAHIbMWZVtA'
         print("Added to Smartsheet"+s_url)
