@@ -29,4 +29,5 @@ def get_prop_list(col):
     return [doc for doc in collection.find({})]
 
 if __name__ == "__main__":
-    print(get_prop_list('properties'))
+    d = {"_id": '47111766'}
+    print(find_property(d, 'properties'))
