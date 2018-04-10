@@ -22,7 +22,7 @@ def add_property(d, col):
 
 def find_property(d, col):
     collection = connect_to_mongo(col)
-    return collection.find_one({'_id': d['_id']})  
+    return collection.find_one({'_id': d['zpid']})  
 
 def get_prop_list(col):
     collection = connect_to_mongo(col)
