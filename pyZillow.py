@@ -146,22 +146,26 @@ def main(url, zws_id, ss_at, sheet_id):
         url = 'https://www.zillow.com/homedetails/645-6TH-Ave-N-Saint-Petersburg-FL-33701/47111766_zpid/?fullpage=true'
         print("Entering sample URL:" + url)
 
+    # Extract the address parts
     address, city, state, zip = get_address(url)
+    
+    # Format the zillow query
     query = format_query_search(zws_id, address, city, state, zip)
-    results = get_search_results(query)
-    data = results.text
+    
+    # Get the data from the query and parse into a property dict
+    data = get_search_results(query).text
     property = parse_results(data)
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
-    #print(property)
-    resp = input_to_smartsheet(ss_at, sheet_id, property)
-    mongo_resp = add_to_mongo(property, 'properties')
-    print("Mongo resp: {}".format(mongo_resp))
+
+    #Check if entry is in the mongo db, and add if not
+    resp = find_property(d, col)
     if resp:
-        s_url = 'https://app.smartsheet.com/b/home?lx=GNCEaOWOxrRfAHIbMWZVtA'
-        print("Added to Smartsheet"+s_url)
+        print("Mongo entry already exists")
         return 200
-    print("failed to add")
-    return 500
+    print("Adding entry to mongo")
+    resp = add_to_mongo(property, 'properties')
+    return 200
+
 
         
 #######################
