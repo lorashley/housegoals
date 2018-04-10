@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as BS
 from flask import Flask, request, render_template
 import json
 import os
+import propMongo
 import re
 import requests
 import smartsheet
@@ -18,7 +19,6 @@ column_map = {}
 def get_cell_by_column_name(row, column_ame):
     column_id = column_map[column_ame]
     return row.get_column(column_id)
-
 
 def get_search_results(url):
     return requests.get(url)
@@ -80,7 +80,7 @@ def parse_results(data):
     soup = BS(data, "lxml")
     
     #list of properties to collect
-    find_list = ['address', 'amount', 'city', 'state', 'zipcode', 'homedetails', 'bedrooms', 'bathrooms', 'lotSizeSqFt', 'finishedSqFt', 'zpid']
+    find_list = ['address', 'amount', 'city', 'state', 'zipcode', 'homedetails', 'bedrooms', 'bathrooms', 'lotSizeSqFt', 'finishedSqFt', 'zpid', 'useCode']
     
     property = {}
     for item in find_list:
@@ -88,9 +88,12 @@ def parse_results(data):
             info = soup.find(item.lower()).text
         except AttributeError:
             print("Unable to retrieve data for: {}".format(item))
-            info = None
+            info = 'n/a1'
         property[item] = info
     return property
+    
+def add_to_mongo(property):
+    return propMongo.add_property(property, 'properties')
 
 def input_to_smartsheet(ss_at, sheet_id, data):
     # Initialize the client
@@ -151,6 +154,7 @@ def main(url, zws_id, ss_at, sheet_id):
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
     #print(property)
     resp = input_to_smartsheet(ss_at, sheet_id, property)
+    add_to_mongo(property)
     if resp:
         s_url = 'https://app.smartsheet.com/b/home?lx=GNCEaOWOxrRfAHIbMWZVtA'
         print("Added to Smartsheet"+s_url)
