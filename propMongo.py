@@ -16,6 +16,7 @@ def connect_to_mongo(col):
 
 def add_property(d, col):
     collection = connect_to_mongo(col)
+    d['_id'] = d['zpid'] # Mongo id == zpid
     status = collection.insert_one(d)
     return status
 
