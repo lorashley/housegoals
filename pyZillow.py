@@ -92,8 +92,8 @@ def parse_results(data):
         property[item] = info
     return property
     
-def add_to_mongo(property):
-    return propMongo.add_property(property, 'properties')
+def add_to_mongo(property, col):
+    return propMongo.add_property(property, col)
 
 def input_to_smartsheet(ss_at, sheet_id, data):
     # Initialize the client
@@ -154,8 +154,8 @@ def main(url, zws_id, ss_at, sheet_id):
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
     #print(property)
     resp = input_to_smartsheet(ss_at, sheet_id, property)
-    mongo_resp = add_to_mongo(property)
-    print(mongo_resp)
+    mongo_resp = add_to_mongo(property, 'properties')
+    print("Mongo resp: {}".format(mongo_resp))
     if resp:
         s_url = 'https://app.smartsheet.com/b/home?lx=GNCEaOWOxrRfAHIbMWZVtA'
         print("Added to Smartsheet"+s_url)
