@@ -20,12 +20,13 @@ def get_score(address, lat, lon):
     print("WALKSCORE URL:" + url)
     resp = requests.get(url)
     data = json.loads(resp.text)
-    walkscore_data = {'walkscore': data['walkscore'],
-                      'description': data['description'],
-                      'transit': data['transit']['score'],
-                      't_description': data['transit']['description'],
-                      'bike': data['bike']['score'],
-                      'b_description': data['bike']['description']}
+    
+    walkscore_data = {'walkscore': data.get('walkscore'),
+                      'description': data.get('description'),
+                      'transit': data.get('transit').get('score'),
+                      't_description': data.get('transit').get('description'),
+                      'bike': data.get('bike').get('score'),
+                      'b_description': data.get('bike').get('description')}
     return walkscore_data
 
 def main():
