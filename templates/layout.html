@@ -31,7 +31,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/new-age.min.css') }}" rel="stylesheet">
-
+    
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <!--<link href="static/css/new-age.min.css" rel="stylesheet">-->
 
 
@@ -43,15 +44,15 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="/">House Goals</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <!--<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
-        </button>
+        </button>-->
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-            <!--<li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
-            </li>
+            <li class="nav-item">
+              <a class="navbar-brand js-scroll-trigger" href="/all">Database</a>
+            </li><!--
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#features">Features</a>
             </li>
@@ -63,9 +64,11 @@
       </div>
     </nav>
 
+    <div class="content">
     {% block body %}{% endblock %}
-
-    <footer>
+    </div>
+    
+<!--    <footer>
       <div class="container">
         <p>&copy; House Goals 2018. All Rights Reserved.</p>
         <ul class="list-inline">
@@ -81,18 +84,17 @@
         </ul>
       </div>
     </footer>
-
+-->
     <!-- Bootstrap core JavaScript -->
-    <!--
-    <script src="static/vendor/jquery/jquery.min.js"></script>
-    <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for this template -->
-    <script src="static/js/new-age.min.js"></script>
-    -->
+    <script src="js/new-age.min.js"></script>
   </body>
 
 </html>

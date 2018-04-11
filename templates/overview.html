@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+    <header class="masthead">
+      <div class="container">
+            <div class="row">
+              <div class="col-lg-12 my-auto">
+                <div class="table-content mx-auto">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3 class="card-title text-muted">{{ p.full_addr }}</h3>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <ul class="list-group list-group-flush">
+    <li class="list-group-item">Price: {{ "${:,.2f}".format(p.amount|int) }}</li>
+    <li class="list-group-item">Bed: {{ p.bedrooms }}  Bath: {{ p.bathrooms }}</li>
+    <li class="list-group-item">Sqft: {{ p.finishedSqFt }}  Lot Size: {{ p.lotSizeSqFt }}</li>
+    <li class="list-group-item">Walkability: {{p.scores.walkscore}} {{p.scores.description}}</li>
+    <li class="list-group-item">Transit: {{p.scores.transit}} {{p.scores.t_description}}</li>
+    <li class="list-group-item">Bike: {{p.scores.bike}} {{p.scores.b_description}}</li>
+  </ul>
+                        <a href="{{ p.homedetails }}" class="card-link">Zillow</a>
+                      </div>
+                    </div>
+                    
+                </div>
+            </div>
+          </div>
+      </div>
+    </header>
+    
+{% endblock %}

@@ -12,6 +12,12 @@
 .icon--largest {
   font-size: 5.8rem; }
   
+#panel {
+  position: relative;
+  padding: 110px 
+
+}
+  
 #inputContainer {
         height: 600px;
   /*height: 600px;

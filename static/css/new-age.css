@@ -165,6 +165,11 @@ header.masthead .header-content {
   text-align: center;
 }
 
+header.masthead .table-content {
+  padding-top: 100px;
+  text-align: center;
+}
+
 header.masthead .header-content h1 {
   font-size: 30px;
 }

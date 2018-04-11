@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="table-content">
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#ZPID</th>
+      <th scope="col">Address</th>
+      <th scope="col">Cost</th>
+      <th scope="col">Bed</th>
+      <th scope="col">Bath</th>
+      <th scope="col">Sqft</th>
+      <th scope="col">Lot</th>
+      <th scope="col">WalkScore</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <th scope="row"><a href="{{row.homedetails}}" target="_blank">{{row.zpid}}</a></th>
+      <td>{{row.address}}</td>
+      <td>{{ "${:,.2f}".format(row.amount|int) }}</td>
+      <td>{{row.bedrooms}}</td>
+      <td>{{row.bathrooms}}</td>
+      <td>{{row.finishedSqFt}}</td>
+      <td>{{row.lotSizeSqFt}}</td>
+      <td>{{row.scores.walkscore}}</td>
+      <td>{{row.scores.description}}</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

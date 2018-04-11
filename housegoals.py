@@ -18,7 +18,7 @@ def getOtherAPIs(property):
     lon = property['longitude']
     score = walk.get_score(address, lat, lon)
     property['scores'] = score
-    school_token = os.environ.get('SCHOOL_TOKEN')
+    #school_token = os.environ.get('SCHOOL_TOKEN')
     return property
 
 def main(url): 
@@ -49,6 +49,12 @@ def results():
     elif status == 500:
         return render_template('failure.html') 
     return render_template('landing.html')    
+
+@app.route('/all', methods=['GET'])
+def list():    
+    col = 'properties'
+    rows = propMongo.get_prop_list(col)
+    return render_template('table.html', rows=rows)
     
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

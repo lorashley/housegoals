@@ -1,0 +1,13 @@
+header.masthead .table-content {
+  padding-top: 100px;
+  text-align: center;
+}
+
+header.masthead .card {
+    color: #222222;
+}
+
+body .table-content{
+  padding-top: 100px;
+  text-align: center;
+}

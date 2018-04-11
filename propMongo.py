@@ -5,6 +5,7 @@ import ssl
 def connect_to_mongo(col):
     muser = os.environ.get('MONGO_USERNAME')
     mpw = os.environ.get('MONGO_PW')
+    
     url = 'mongodb://{}:{}@hgdb-shard-00-00-fo5jm.mongodb.net:27017, \
     hgdb-shard-00-01-fo5jm.mongodb.net:27017, \
     hgdb-shard-00-02-fo5jm.mongodb.net:27017/test?replicaSet=hgdb-shard-0&authSource=admin'.format(muser,mpw)
