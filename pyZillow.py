@@ -5,20 +5,12 @@ import os
 import propMongo
 import re
 import requests
-import smartsheet
 import usaddress as usa
+from walkscore.api import WalkScore
 
 # Init Flask
 app = Flask(__name__)
 
-
-# The API identifies columns by Id, but it's more convenient to refer to column names. Store a map here
-column_map = {}
-
-# Helper function to find cell in a row
-def get_cell_by_column_name(row, column_ame):
-    column_id = column_map[column_ame]
-    return row.get_column(column_id)
 
 def get_search_results(url):
     return requests.get(url)
@@ -91,49 +83,15 @@ def parse_results(data):
             info = 'n/a1'
         property[item] = info
     return property
-
-def input_to_smartsheet(ss_at, sheet_id, data):
-    # Initialize the client
-    ss = smartsheet.Smartsheet(ss_at)
-
-    # Make sure we don't miss any error
-    ss.errors_as_exceptions(True)
     
-    # Load entire sheet
-    sheet = ss.Sheets.get_sheet(sheet_id)
+def getOtherAPIs(property):
+    walk_token = os.environ.get('WALKSCORE_TOKEN')
+    walkscore = WalkScore(walk_token)
+    address = property['full_addr']
+    print(walkscore.makeRequest(address))
     
-    # Build column map for later reference - translates column names to column id
-    for column in sheet.columns:
-        column_map[column.title] = column.id
-    
-    ss_map = {
-    'full_addr': 'Address',
-    'amount': 'Price',
-    'bedrooms': 'Bed',
-    'bathrooms': 'Bath',
-    'finishedSqFt': 'Sq Ft.',
-    'lotSizeSqFt' : 'Lot Size',
-    'city': 'City',
-    'state': 'State',
-    'zipcode': 'Zip',
-    'homedetails': 'URL'
-    }
- 
-    row = smartsheet.models.Row()
-    row.to_top = True
-    for k,v in ss_map.items():
-        try:
-            row.cells.append({
-                'column_id': column_map[v],
-                'value': data[k],
-                'strict': False
-                })
-        except TypeError as e:
-            print('{}; data: {}'.format(e, data))
-            return
-
-    action = ss.Sheets.add_rows(sheet_id, [row]) 
-    return action
+    school_token = os.environ.get('SCHOOL_TOKEN')
+    return
 
 def start():
     url = input("Please enter Zillow URL: ")
@@ -160,6 +118,7 @@ def main(url, zws_id, ss_at, sheet_id):
     if resp:
         print("Mongo entry already exists")
         return 200
+    property = getOtherAPIs(property) # Call other APIs
     print("Adding entry to mongo")
     resp = propMongo.add_property(property, 'properties')
     return 200
