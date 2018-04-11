@@ -102,6 +102,7 @@ def main(url, zws_id, ss_at, sheet_id):
     
     # Format the zillow query
     query = format_query_search(zws_id, address, city, state, zip)
+    print("Zillow query" + query)
     
     # Get the data from the query and parse into a property dict
     data = requests.get(url).text
