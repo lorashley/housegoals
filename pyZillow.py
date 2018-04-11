@@ -5,9 +5,6 @@ import re
 import requests
 import usaddress as usa
 
-# Init Flask
-app = Flask(__name__)
-    
 def get_zpid(url):
     pattern = '\/(.*)_zpid'
     mo = re.search(pattern, url)
