@@ -3,6 +3,7 @@ from flask import Flask, request, render_template
 import json
 import os
 import propMongo
+import pyZillow
 import re
 import requests
 import usaddress as usa
@@ -21,7 +22,7 @@ def getOtherAPIs(property):
     return property
 
 def main(url): 
-    property = get_zillow_data(url)
+    property = pyZillow.get_zillow_data(url)
     resp = propMongo.find_property(property, 'properties')
     if resp:
         print("Mongo entry already exists")
