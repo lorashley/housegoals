@@ -1,12 +1,9 @@
 from bs4 import BeautifulSoup as BS
-from flask import Flask, request, render_template
 import json
 import os
-import propMongo
 import re
 import requests
 import usaddress as usa
-import walk
 
 # Init Flask
 app = Flask(__name__)
@@ -79,15 +76,6 @@ def parse_results(data):
             info = 'n/a1'
         property[item] = info
     return property
-    
-def getOtherAPIs(property):
-    address = property['full_addr'].replace(',','').replace('.','')
-    lat = property['latitude']
-    lon = property['longitude']
-    score = walk.get_score(address, lat, lon)
-    property['scores'] = score
-    school_token = os.environ.get('SCHOOL_TOKEN')
-    return property
 
 def start():
     url = input("Please enter Zillow URL: ")
@@ -120,30 +108,19 @@ def main(url, zws_id, ss_at, sheet_id):
     resp = propMongo.add_property(property, 'properties')
     return 200
 
-
-        
-#######################
-# ROUTES
-#######################
-
-@app.route('/', methods=['GET'])
-def landing():
-    return render_template('landing.html')
-    
-@app.route('/', methods=['POST'])
-def results():
+def get_zillow_data(url):
     zws_id = os.environ.get('ZWS_ID') # Zillow ID
-    ss_at = os.environ.get('SS_AT') # Smartsheet access token
-    sheet_id = os.environ.get('SHEET_ID') # Smartsheet sheet ID
+    # Extract the address parts
+    address, city, state, zip = get_address(url)
     
-    url = request.form['url']
-    status = main(url, zws_id, ss_at, sheet_id)
-    if status == 200:
-        return render_template('success.html') 
-    elif status == 500:
-        return render_template('failure.html') 
-    return render_template('landing.html')    
+    # Format the zillow query
+    query = format_query_search(zws_id, address, city, state, zip)
+    print("Zillow query" + query)
     
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    # Get the data from the query and parse into a property dict
+    data = requests.get(query).text
+    property = parse_results(data)
+    property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
+    return property
+
+  
