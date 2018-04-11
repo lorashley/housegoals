@@ -6,14 +6,10 @@ import propMongo
 import re
 import requests
 import usaddress as usa
-from walkscore.api import WalkScore
+import walk
 
 # Init Flask
 app = Flask(__name__)
-
-
-def get_search_results(url):
-    return requests.get(url)
     
 def get_zpid(url):
     pattern = '\/(.*)_zpid'
@@ -72,7 +68,7 @@ def parse_results(data):
     soup = BS(data, "lxml")
     
     #list of properties to collect
-    find_list = ['address', 'amount', 'city', 'state', 'zipcode', 'homedetails', 'bedrooms', 'bathrooms', 'lotSizeSqFt', 'finishedSqFt', 'zpid', 'useCode']
+    find_list = ['address', 'amount', 'city', 'state', 'zipcode', 'homedetails', 'bedrooms', 'bathrooms', 'lotSizeSqFt', 'finishedSqFt', 'zpid', 'useCode', 'latitude', 'longitude']
     
     property = {}
     for item in find_list:
@@ -85,10 +81,10 @@ def parse_results(data):
     return property
     
 def getOtherAPIs(property):
-    walk_token = os.environ.get('WALKSCORE_TOKEN')
-    walkscore = WalkScore(walk_token)
-    address = property['full_addr']
-    print(walkscore.makeRequest(address))
+    address = property['full_addr'].replace(',','').replace('.','')
+    lat = property['latitude']
+    lon = property['longitude']
+    score = walk.get_score(address, lat, lon)
     
     school_token = os.environ.get('SCHOOL_TOKEN')
     return
@@ -108,7 +104,7 @@ def main(url, zws_id, ss_at, sheet_id):
     query = format_query_search(zws_id, address, city, state, zip)
     
     # Get the data from the query and parse into a property dict
-    data = get_search_results(query).text
+    data = requests.get(url).text
     property = parse_results(data)
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
 
