@@ -105,7 +105,7 @@ def main(url, zws_id, ss_at, sheet_id):
     print("Zillow query" + query)
     
     # Get the data from the query and parse into a property dict
-    data = requests.get(url).text
+    data = requests.get(query).text
     property = parse_results(data)
     property['full_addr'] = '{}. {}, {} {}'.format(address, city, state, zip)
 
