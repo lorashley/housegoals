@@ -19,7 +19,7 @@
     {% for row in rows %}
     <tr>
       <th scope="row"><a href="{{row.homedetails}}" target="_blank">{{row.zpid}}</a></th>
-      <td>{{row.address}}</td>
+      <td>{{row.full_addr}}</td>
       <td>{{ "${:,.2f}".format(row.amount|int) }}</td>
       <td>{{row.bedrooms}}</td>
       <td>{{row.bathrooms}}</td>
