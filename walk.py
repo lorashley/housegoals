@@ -9,6 +9,15 @@ address=1119%8th%20Avenue%20Seattle%20WA%2098101&lat=47.6085&
 lon=-122.3295&transit=1&bike=1&wsapikey=<YOUR-WSAPIKEY>
 """
 
+def get_item(item, data):
+    #Optional Data
+    score = 'n/a'
+    description = 'n/a'
+    if data.get(item):
+        score = data.get(item).get('score')
+        description = data.get(item).get('description')
+    return score, description
+
 def get_score(address, lat, lon):
     api = os.environ.get('WALKSCORE_TOKEN')
     base_url = 'http://api.walkscore.com/score?format=json'
@@ -21,12 +30,15 @@ def get_score(address, lat, lon):
     resp = requests.get(url)
     data = json.loads(resp.text)
     
+    transit, t_description = get_item('transit', data)
+    bike, b_description = get_item('bike', data)
+    
     walkscore_data = {'walkscore': data.get('walkscore'),
                       'description': data.get('description'),
-                      'transit': data.get('transit').get('score'),
-                      't_description': data.get('transit').get('description'),
-                      'bike': data.get('bike').get('score'),
-                      'b_description': data.get('bike').get('description')}
+                      'transit': transit,
+                      't_description': t_description,
+                      'bike': bike,
+                      'b_description': b_description}
     return walkscore_data
 
 def main():
