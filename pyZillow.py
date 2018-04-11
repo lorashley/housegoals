@@ -85,9 +85,9 @@ def getOtherAPIs(property):
     lat = property['latitude']
     lon = property['longitude']
     score = walk.get_score(address, lat, lon)
-    
+    property['scores'] = score
     school_token = os.environ.get('SCHOOL_TOKEN')
-    return
+    return property
 
 def start():
     url = input("Please enter Zillow URL: ")

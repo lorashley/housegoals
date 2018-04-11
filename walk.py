@@ -26,7 +26,7 @@ def get_score(address, lat, lon):
     lon = '&lon={}'.format(lon)
     the_rest = '&transit=1&bike=1&wsapikey={}'.format(api)
     url = base_url + address + lat + lon + the_rest
-    print("WALKSCORE URL:" + url)
+    #print("WALKSCORE URL:" + url)
     resp = requests.get(url)
     data = json.loads(resp.text)
     
